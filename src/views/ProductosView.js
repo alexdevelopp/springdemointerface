@@ -8,62 +8,101 @@ import Constants from '../data/Url';
 const ProductosView = () => {
 
   const baseUrl = Constants.API_BASE_URL;
-  const service = new ApiService(baseUrl)
+  const service = new ApiService(baseUrl);
   const [productos, setProductos] = useState([]);
-  const [nombre,setNombre] = useState([]);
-  const [precio,setPrecio] = useState([]);
-  
+  const [id, setId] = useState(null);
+  const [nombre, setNombre] = useState('');
+  const [precio, setPrecio] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
+
+  //Carga lista de productos
+
   useEffect(() => {
-
-
+    setIsEdit(false);
+    setId(null);
     const cargarProductos = async () => {
       try {
-        const response = await service.getAll('productos'); 
+        const response = await service.getAll('productos');
         setProductos(response);
       } catch (error) {
         console.error('Error al cargar productos:', error);
       }
     };
-    // Llamada a la API para obtener la lista de productos al montar el componente
     cargarProductos();
-  },[]); 
+  }, []);
+
+//Evento que captura el cambio de nombre
 
   const handleNameChange = (event) => {
     setNombre(event.target.value);
-  }
+  };
 
+//Evento que captura el cambio de precio
   const handlePrecioChange = (event) => {
     setPrecio(event.target.value);
-  }
+  };
 
-  //Evento que añade un producto
-  const postProducto = async (event) => {
+  //Obtener los datos de un producto del grid cuando le das a Modificar
 
-    event.preventDefault()
+  const handleEdit = (id) => {
+    const producto = productos.find((producto) => producto.idProducto === id);
+    setIsEdit(true);
+    setId(id);
+    setNombre(producto.nombre);
+    setPrecio(producto.precio);
+  };
+
+//Vaciar y setear campos a null
+
+  const handleCancel = () => {
+    setNombre('');
+    setPrecio('');
+    setIsEdit(false);
+    setId(null);
+  };
+
+  //Evento que añade o modifica producto
+
+  const handleSubmit = async () => {
 
     const productoNuevo = {
       nombre: nombre,
-      precio: precio
+      precio: precio,
     };
 
-    await service.create('productos',productoNuevo)
-    setNombre('')
-    setPrecio('')
-    setProductos([...productos, productoNuevo]);
-  }
+    if (isEdit) {
+      await service.update('productos', id, productoNuevo);
+      const updateProductos = productos.map((producto) =>
+        producto.idProducto === id
+          ? { ...producto, nombre: productoNuevo.nombre, precio: productoNuevo.precio }
+          : producto
+      );
+      setProductos(updateProductos);
+      setNombre('');
+      setPrecio('');
+      setIsEdit(false);
+      setId(null);
+    } else {
+      await service.create('productos', productoNuevo);
+      setNombre('');
+      setPrecio('');
+      setProductos([...productos, productoNuevo]);
+    }
+  };
+
+//Evento que borra producto
 
   const deleteProducto = async (id) => {
     try {
-      await service.delete('productos',id);
-      //Actualizar lista de productos sin la eliminada
-      console.log(id)
+      await service.delete('productos', id);
       const updateProductos = productos.filter((producto) => producto.idProducto !== id);
       setProductos(updateProductos);
     } catch (error) {
       console.error('Error al eliminar el producto:', error);
     }
+  };
 
-  }
+  
 
   
 
@@ -89,7 +128,7 @@ const ProductosView = () => {
             <div>{producto.precio}</div>
             <div>
               <button className='button-eliminar button-comun' onClick={() => deleteProducto(producto.idProducto)}>Eliminar</button>
-              <button className='button-modificar button-comun'>Modificar</button>
+              <button className='button-modificar button-comun'onClick={() => handleEdit(producto.idProducto)}>Modificar</button>
             </div>
           </div>
         ))}
@@ -100,7 +139,8 @@ const ProductosView = () => {
         </div>
         <label>Nombre: <input type="text" id="nombre" value={nombre} onChange={handleNameChange}/></label>
         <label>Precio: <input type="text" id="precio" value={precio} onChange={handlePrecioChange}/></label>
-        <button className='button-comun button-submit' onClick={postProducto}>Añadir</button>
+        <button className='button-comun button-submit' onClick={() => handleSubmit(id)}>{isEdit ? 'Actualizar' : 'Enviar'}</button>
+        <button className='button-comun button-eliminar' onClick={handleCancel}>Cancelar</button>
       </div>
     </div>
   );

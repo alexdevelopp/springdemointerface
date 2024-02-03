@@ -46,6 +46,7 @@ class ApiService {
       const response = await this.api.put(`${endpoint}/${id}`, data);
       return response.data;
     } catch (error) {
+      console.log(error)
       console.error('Error al actualizar elemento:', error);
       throw error;
     }
@@ -58,7 +59,6 @@ class ApiService {
       return response.data;
     } catch (error) {
       console.error('Error al eliminar elemento:', error);
-      console.log(error)
       throw error;
     }
   }
