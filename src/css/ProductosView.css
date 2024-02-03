@@ -1,0 +1,100 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+  
+  .container {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .grid-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 60px;
+    width: 80%;
+  }
+  
+  .grid-header,
+  .grid-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .grid-row {
+    transition: background-color 0.3s;
+  }
+  
+  .grid-row:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .formulario {
+    margin-top: 20px;
+    margin-bottom: 50px;
+  }
+  
+.button-comun {
+  margin-left: 5px;
+  cursor: pointer;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  transition: background-color 0.3s; 
+}
+
+
+.button-eliminar {
+  cursor: pointer;
+  background-color: #e53935;
+}
+
+.button-eliminar:hover {
+  background-color: #c62828;
+}
+
+.button-modificar {
+  cursor: pointer;
+  background-color: #4caf50;
+}
+
+.button-modificar:hover {
+  background-color: #388e3c; 
+}
+
+.button-submit{
+  background-color: rgb(52, 52, 218);
+}
+
+.button-submit:hover{
+  cursor: pointer;
+  background-color:rgb(74, 74, 250) ;
+}
+
+  
+  input {
+    padding: 5px;
+    margin: 5px;
+  }
+
+  .titulo {
+    background-color: #45a049;
+    color: white;
+    width: 80%;
+  }
+
+
+
+  
