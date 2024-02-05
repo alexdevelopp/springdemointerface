@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import './../css/ProductosView.css';
 import ApiService from '../data/ApiService';
 import Constants from '../data/Url';
+import { Link } from 'react-router-dom';
 
 
 
@@ -134,13 +135,17 @@ const ProductosView = () => {
         ))}
       </div>
       <div className="formulario">
-        <div className='titulo'>
+        <div className='titulo-form'>
         <h2>Agregar Producto</h2>
         </div>
         <label>Nombre: <input type="text" id="nombre" value={nombre} onChange={handleNameChange}/></label>
         <label>Precio: <input type="text" id="precio" value={precio} onChange={handlePrecioChange}/></label>
         <button className='button-comun button-submit' onClick={() => handleSubmit(id)}>{isEdit ? 'Actualizar' : 'Enviar'}</button>
         <button className='button-comun button-eliminar' onClick={handleCancel}>Cancelar</button>
+      </div>
+      <div className='ofertas-container'>
+        <h3>Tenemos varios productos rebajados al 20%.</h3>
+        <button className='button-ofertas'><Link to='/rebajas'>Ver los productos en oferta</Link></button>
       </div>
     </div>
   );
